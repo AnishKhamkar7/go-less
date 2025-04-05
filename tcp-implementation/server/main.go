@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"net"
 )
@@ -30,6 +31,18 @@ func main() {
 func handleIncomingConnection(conn net.Conn) {
 	defer conn.Close()
 	
-	
+	reader := bufio.NewReader(conn)
+
+	line,err := reader.ReadString('\n')
+
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	if line ==""  {
+		fmt.Println("EMPTY")
+	}
+
+	fmt.Println("reader::::",line)
 
 }

@@ -14,4 +14,11 @@ func main() {
 
 	defer conn.Close()
 
+	_,error := conn.Write([]byte("Hello"))
+
+	if error != nil {
+		fmt.Println("ERROR")
+		return
+	}
+
 }
