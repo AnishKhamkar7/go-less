@@ -1,32 +1,42 @@
 package main
 
 import (
-	"fmt"
+	"sync"
 	"time"
 )
 
+type Order struct {
+	TNumber  int
+	PrepTime time.Duration
+}
+
 func main() {
 
-	go oddNum(10)
- 	go evenNum(10)
+	orders := []Order{
 
-	time.Sleep(1* time.Second)
+		{
+			TNumber: 1,
+			PrepTime: 2,
+		},
+		{
+			TNumber: 2,
+			PrepTime: 8,
+		},
+		{
+			TNumber: 3,
+			PrepTime: 4,
+		},
 
-}
 
-func evenNum(limit int) {
-	for i := range limit {
-		if i%2 == 0 {
-			fmt.Println("EVEN",i)
-			// time.Sleep(time.Millisecond * 500)
-		}	
 	}
-}
-
-func oddNum(limit int) {
-	for i := range limit {
-		if i%2 != 0 {
-			fmt.Println("ODD",i)
-		}
+	wg := sync.WaitGroup{}
+	for _,order := range orders {
+		wg.Add(1)
+		go func ()  {
+			defer wg.Done()
+			go ProcessData(order)
+		}()
 	}
+
+	wg.Wait()
 }
